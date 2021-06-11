@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
+    <OCD id="org.open.aem.impl.ChromeUXAPIServiceImpl" name="Web Vital API Service" description="Service that provides methods to get performance stat.">
+        <AD id="CrUX.restapi.endpoint" type="String" default="https://chromeuxreport.googleapis.com/v1/records:queryRecord?key=" name="CrUX Rest API Endpoint" description="%CrUX.restapi.endpoint.description"/>
+        <AD id="CrUX.restapi.key" type="String" default="BIzaSyBtaObXNvbKHI751eb7SRLOsK2UazFrk8U" name="CrUX Rest API Key" description="%CrUX.restapi.key.description"/>
+        <AD id="http.connection.request.timeout" type="Long" default="5000" name="HTTP Connection Request Timeout" description="%http.connection.request.timeout.description"/>
+        <AD id="http.connection.timeout" type="Long" default="5000" name="HTTP Connection Timeout" description="%http.connection.timeout.description"/>
+        <AD id="http.socket.timeout" type="Long" default="5000" name="HTTP Socket Timeout" description="%http.socket.timeout.description"/>
+        <AD id="CRUX.ORIGIN.DOMAIN" type="String" default="https://www.paloaltonetworks.com/,https://www.apple.com/,https://www.google.com/" name="List of Origin domain to compare" description="List of domain to compare." cardinality="100"/>
+    </OCD>
+    <OCD id="org.open.aem.servlets.WebVitalServletScheduler" name="Web Vital Score for live pages" description="Get Web Vital Score from Chrome User Experience Report">
+        <AD id="scheduler.expression" type="String" default="0 0 10 ? * *" name="Scheduler Expression" description="%scheduler.expression.description"/>
+        <AD id="path.domain" type="String" default="/content/sample/en_US=https://www.sample.com" name="List of  path domain Mapping" description="list of path domain Mapping to rewrite URL." cardinality="100"/>
+    </OCD>
+    <Designate pid="org.open.aem.impl.ChromeUXAPIServiceImpl">
+        <Object ocdref="org.open.aem.impl.ChromeUXAPIServiceImpl"/>
+    </Designate>
+    <Designate pid="org.open.aem.servlets.WebVitalServletScheduler">
+        <Object ocdref="org.open.aem.servlets.WebVitalServletScheduler"/>
+    </Designate>
+</metatype:MetaData>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+    <scr:component enabled="true" immediate="true" name="org.open.aem.impl.ChromeUXAPIServiceImpl">
+        <implementation class="org.open.aem.impl.ChromeUXAPIServiceImpl"/>
+        <service servicefactory="false">
+            <provide interface="org.open.aem.ChromeUXAPIService"/>
+        </service>
+        <property name="service.description" type="String" value="Service that provides methods to call page insight API."/>
+        <property name="CrUX.restapi.endpoint" type="String" value="https://chromeuxreport.googleapis.com/v1/records:queryRecord?key="/>
+        <property name="CrUX.restapi.key" type="String" value="BIzaSyBtaObXNvbKHI751eb7SRLOsK2UazFrk8U"/>
+        <property name="http.connection.request.timeout" type="Long" value="5000"/>
+        <property name="http.connection.timeout" type="Long" value="5000"/>
+        <property name="http.socket.timeout" type="Long" value="5000"/>
+        <property name="CRUX.ORIGIN.DOMAIN" type="String">
+            https://www.paloaltonetworks.com/
+            https://www.apple.com/
+            https://www.google.com/
+        </property>
+        <property name="service.pid" value="org.open.aem.impl.ChromeUXAPIServiceImpl"/>
+    </scr:component>
+    <scr:component enabled="true" immediate="true" name="org.open.aem.impl.filters.LoggingFilter">
+        <implementation class="org.open.aem.impl.filters.LoggingFilter"/>
+        <service servicefactory="false">
+            <provide interface="javax.servlet.Filter"/>
+        </service>
+        <property name="service.ranking" type="Integer" value="-700"/>
+        <property name="sling.filter.scope" value="REQUEST"/>
+        <property name="service.pid" value="org.open.aem.impl.filters.LoggingFilter"/>
+    </scr:component>
+    <scr:component enabled="true" immediate="true" name="org.open.aem.servlets.WebVitalServletScheduler" configuration-policy="require" activate="activate">
+        <implementation class="org.open.aem.servlets.WebVitalServletScheduler"/>
+        <service servicefactory="false">
+            <provide interface="java.lang.Runnable"/>
+            <provide interface="javax.servlet.Servlet"/>
+            <provide interface="javax.servlet.ServletConfig"/>
+            <provide interface="java.io.Serializable"/>
+        </service>
+        <property name="service.description" type="String" value="service for geting Web Vital Score for live pages"/>
+        <property name="sling.servlet.paths" type="String" value="/apps/public/webvital"/>
+        <property name="sling.auth.requirements" type="String" value="-/apps/public/webvital"/>
+        <property name="sling.servlet.methods" type="String" value="GET"/>
+        <property name="scheduler.expression" type="String" value="0 0 10 ? * *"/>
+        <property name="service.vendor" type="String" value="Palo Alto Networks"/>
+        <property name="path.domain" type="String" value="/content/sample/en_US=https://www.sample.com"/>
+        <property name="service.pid" value="org.open.aem.servlets.WebVitalServletScheduler"/>
+        <reference name="chromeUXAPIService" interface="org.open.aem.ChromeUXAPIService" cardinality="1..1" policy="static" bind="bindChromeUXAPIService" unbind="unbindChromeUXAPIService"/>
+    </scr:component>
+</components>

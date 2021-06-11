@@ -1,0 +1,5 @@
+org/open/aem/servlets/WebVitalServletScheduler.class
+org/open/aem/package-info.class
+org/open/aem/impl/filters/LoggingFilter.class
+org/open/aem/impl/ChromeUXAPIServiceImpl.class
+org/open/aem/ChromeUXAPIService.class
