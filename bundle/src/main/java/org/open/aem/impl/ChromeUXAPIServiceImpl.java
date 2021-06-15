@@ -65,6 +65,8 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
 	private static Map map ;
 	private static String[] originDomainsArray;
 	private static String allOriginStore;
+	private static String[] toolTipNotes = {"Good", "Improve","Poor"};
+
 
 
 	public void clearCache() {
@@ -103,6 +105,43 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
 		log.debug("Exiting getVitalScore() method");
 
 		return views;
+	}
+	
+	private String getToolTip(JSONObject jObj){
+		String toolTip = "";
+		try{
+			if(jObj.has("histogram")){
+				JSONArray jArray = jObj.getJSONArray("histogram");
+				for(int counter=0;counter<jArray.length();counter++){
+					JSONObject jItmObj = jArray.getJSONObject(counter);
+					String ttNotes="";
+					if(jItmObj.has("density")){
+						if(counter>0){
+							toolTip = toolTip + " <br> "+ Math.round(jItmObj.getDouble("density")*100) +"% ";
+						}else{
+							toolTip = toolTip + Math.round(jItmObj.getDouble("density")*100) +"% ";
+						}
+						
+						if(jItmObj.has("end")){
+							if(jItmObj.has("start")){								
+								if(jItmObj.getDouble("start") != 0){
+									ttNotes = toolTipNotes[1];
+								}else{
+									ttNotes = toolTipNotes[0];
+								}
+							}
+						}else{
+							ttNotes = toolTipNotes[2];
+						}
+						toolTip = toolTip + ttNotes; 
+					}
+				}
+			}
+		}catch(Exception e){
+			log.error("Tooltip issue occured", e);
+		}
+	
+		return toolTip;
 	}
 
 	private String fetchView(String pageurl, String formfactor,String effectiveConnectionType) throws IOException{
@@ -167,14 +206,17 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
      			 					clss = "fail";
      			 				}
      			 				output = output + "'CLS':'"+pCls+"',";
+     			 				output = output + "'CLSTOOLTIP':'"+getToolTip(jCLS)+"',";
      			 				output = output + "'CLSSTYLE':'"+clss+"',";
      			 			}else{
      			 				output = output + "'CLS':'N/A',";
+     			 				output = output + "'CLSTOOLTIP':'N/A',";
      			 				output = output + "'CLSSTYLE':'black',";
      			 			}
      			 		}else{
      			 			//"CLS": "",
      			 			output = output + "'CLS':'N/A',";
+     			 			output = output + "'CLSTOOLTIP':'N/A',";
      			 			output = output + "'CLSSTYLE':'black',";
      			 		}
      			 		
@@ -192,15 +234,18 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
      			 					fids = "fail";
      			 				}
      			 				output = output + "'FID':'"+pFid+"',";
+     			 				output = output + "'FIDTOOLTIP':'"+getToolTip(jFID)+"',";
      			 				output = output + "'FIDSTYLE':'"+fids+"',";
      			 				
      			 			}else{
      			 				output = output + "'FID':'N/A',";
+     			 				output = output + "'FIDTOOLTIP':'N/A',";
      			 				output = output + "'FIDSTYLE':'black',";
      			 			}
      			 		}else{
      			 			//"CLS": "",
      			 			output = output + "'FID':'N/A',";
+     			 			output = output + "'FIDTOOLTIP':'N/A',";
      			 			output = output + "'FIDTYLE':'black',";
      			 		}
      			 		
@@ -218,14 +263,17 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
      			 					lcps = "fail";
      			 				}
      			 				output = output + "'LCP':'"+pLcp+"',";
+     			 				output = output + "'LCPTOOLTIP':'"+getToolTip(jLCP)+"',";
      			 				output = output + "'LCPTYLE':'"+lcps+"',";
      			 			}else{
 	     			 			output = output + "'LCP':'N/A',";
+     			 				output = output + "'LCPTOOLTIP':'N/A',";
     	 			 			output = output + "'LCPTYLE':'black',";
      				 		}
      			 		}else{
      			 			//"CLS": "",
      			 			output = output + "'LCP':'N/A',";
+     			 			output = output + "'LCPTOOLTIP':'N/A',";
      			 			output = output + "'LCPSTYLE':'black',";
      			 		}
      			 	}
@@ -345,14 +393,17 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
      			 					clss = "fail";
      			 				}
      			 				output = output + "'CLS':'"+pCls+"',";
+     			 				output = output + "'CLSTOOLTIP':'"+getToolTip(jCLS)+"',";
      			 				output = output + "'CLSSTYLE':'"+clss+"',";
      			 			}else{
      			 				output = output + "'CLS':'N/A',";
+     			 				output = output + "'CLSTOOLTIP':'N/A',";
      			 				output = output + "'CLSSTYLE':'black',";
      			 			}
      			 		}else{
      			 			//"CLS": "",
      			 			output = output + "'CLS':'N/A',";
+     			 			output = output + "'CLSTOOLTIP':'N/A',";
      			 			output = output + "'CLSSTYLE':'black',";
      			 		}
      			 		
@@ -370,15 +421,18 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
      			 					fids = "fail";
      			 				}
      			 				output = output + "'FID':'"+pFid+"',";
+     			 				output = output + "'FIDTOOLTIP':'"+getToolTip(jFID)+"',";
      			 				output = output + "'FIDSTYLE':'"+fids+"',";
      			 				
      			 			}else{
      			 				output = output + "'FID':'N/A',";
+     			 				output = output + "'FIDTOOLTIP':'N/A',";
      			 				output = output + "'FIDSTYLE':'black',";
      			 			}
      			 		}else{
      			 			//"CLS": "",
      			 			output = output + "'FID':'N/A',";
+     			 			output = output + "'FIDTOOLTIP':'N/A',";
      			 			output = output + "'FIDTYLE':'black',";
      			 		}
      			 		
@@ -396,14 +450,17 @@ public class ChromeUXAPIServiceImpl implements ChromeUXAPIService {
      			 					lcps = "fail";
      			 				}
      			 				output = output + "'LCP':'"+pLcp+"',";
+     			 				output = output + "'LCPTOOLTIP':'"+getToolTip(jLCP)+"',";
      			 				output = output + "'LCPTYLE':'"+lcps+"',";
      			 			}else{
 	     			 			output = output + "'LCP':'N/A',";
+     			 				output = output + "'LCPTOOLTIP':'N/A',";
     	 			 			output = output + "'LCPTYLE':'black',";
      				 		}
      			 		}else{
      			 			//"CLS": "",
      			 			output = output + "'LCP':'N/A',";
+     			 			output = output + "'LCPTOOLTIP':'N/A',";
      			 			output = output + "'LCPSTYLE':'black',";
      			 		}
      			 	}

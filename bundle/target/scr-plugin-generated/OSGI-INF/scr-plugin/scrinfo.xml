@@ -39,6 +39,7 @@
         <property name="sling.auth.requirements" type="String" value="-/apps/public/webvital" private="false"/>
         <property name="sling.servlet.methods" type="String" value="GET" private="false"/>
         <property name="scheduler.expression" type="String" value="0 0 10 ? * *" private="false"/>
+        <property name="append.html" type="Boolean" value="false" private="false"/>
         <property name="service.vendor" type="String" value="Palo Alto Networks" private="false"/>
         <property name="path.domain" type="String" value="/content/sample/en_US=https://www.sample.com" private="false"/>
         <property name="service.pid" value="org.open.aem.servlets.WebVitalServletScheduler" private="false"/>

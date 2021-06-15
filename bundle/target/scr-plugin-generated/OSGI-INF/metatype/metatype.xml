@@ -9,6 +9,7 @@
     </OCD>
     <OCD id="org.open.aem.servlets.WebVitalServletScheduler" name="Web Vital Score for live pages" description="Get Web Vital Score from Chrome User Experience Report">
         <AD id="scheduler.expression" type="String" default="0 0 10 ? * *" name="Scheduler Expression" description="%scheduler.expression.description"/>
+        <AD id="append.html" type="Boolean" default="false" name="Append HTML extension?" description="%append.html.description"/>
         <AD id="path.domain" type="String" default="/content/sample/en_US=https://www.sample.com" name="List of  path domain Mapping" description="list of path domain Mapping to rewrite URL." cardinality="100"/>
     </OCD>
     <Designate pid="org.open.aem.impl.ChromeUXAPIServiceImpl">

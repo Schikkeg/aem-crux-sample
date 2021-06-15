@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1623387096521
+Bnd-LastModified: 1623718259579
 Build-Jdk: 1.8.0_241
 Built-By: shassanchi
 Bundle-Description: Maven Multimodule project for Web Vital Plugin.

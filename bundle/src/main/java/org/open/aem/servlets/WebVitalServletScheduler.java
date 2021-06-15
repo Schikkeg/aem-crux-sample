@@ -49,6 +49,7 @@ import java.io.IOException;
 		@Property(name = "sling.auth.requirements", value = "-/apps/public/webvital", propertyPrivate = true),
 		@Property(name = "sling.servlet.methods", value = "GET", propertyPrivate = true),
 		@Property(name = "scheduler.expression", value = "0 0 10 ? * *", label = "Scheduler Expression"),
+		@Property(name = "append.html",  label = "Append HTML extension?", boolValue = false),
 		@Property(name = "service.vendor", value = "Palo Alto Networks", propertyPrivate = true),
 		@Property(name = "path.domain", label = "List of  path domain Mapping",  cardinality = 100,   description = "list of path domain Mapping to rewrite URL.",  value = { "/content/sample/en_US=https://www.sample.com" }) 
 		})
@@ -68,6 +69,8 @@ public class WebVitalServletScheduler extends SlingAllMethodsServlet implements 
 	private static final Logger logger = LoggerFactory.getLogger(WebVitalServletScheduler.class);
 
     private Map<String, String> mapPathDomain = new HashMap<String, String>();
+    
+    private boolean appendHTML = Boolean.FALSE;
 
 	/* OSGi Service References */
 	@Reference
@@ -91,6 +94,7 @@ public class WebVitalServletScheduler extends SlingAllMethodsServlet implements 
 					logger.debug("mapPathDomain : {}", path);
 				}
 		}
+		appendHTML = PropertiesUtil.toBoolean(context.getProperties().get("append.html"),false);
 	}
 
 	@Override
@@ -142,6 +146,13 @@ public class WebVitalServletScheduler extends SlingAllMethodsServlet implements 
             	}	
         	}
 	    }
+	    
+	    if(appendHTML){
+	    	if(path!=null && !path.endsWith(".html")){
+	    		path = path + ".html";
+	    	}
+	    }
+	    
 	    logger.debug("getDomainURL output ===>"+path);
         return path;
     } 
